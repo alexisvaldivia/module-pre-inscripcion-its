@@ -1,8 +1,6 @@
 import mongoose from 'mongoose';
 
-const preinscriptoModel = new mongoose.Schema({
-	_id: ObjectId,
-
+const preinscriptoSchema = new mongoose.Schema({
 	fechaCreacion: { type: Date, default: Date.now },
 
 	estado: {
@@ -18,7 +16,19 @@ const preinscriptoModel = new mongoose.Schema({
 		email: String,
 		provincia: String,
 		ciudad: String,
+		direccion: String,
+	},
+
+	estudios: {
+		secundarioCompleto: Boolean,
+		institucion: String,
+		anioEgreso: Number,
+		ciudadInstitucion: String,
+		provinciaInstitucion: String,
+		analiticoUrl: String,
 	},
 });
 
-export default mongoose.model('Preinscripto', preinscriptoModel);
+const Preinscripto = mongoose.model('Preinscripto', preinscriptoSchema);
+
+export default Preinscripto;

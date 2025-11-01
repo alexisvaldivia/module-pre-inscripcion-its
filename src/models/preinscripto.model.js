@@ -29,8 +29,7 @@ const preinscriptoSchema = new mongoose.Schema({
 		institucion: { type: String, required: false },
 		anioEgreso: { type: Number, required: false },
 		ciudadInstitucion: { type: Number, required: false },
-		provinciaInstitucion: { type: Number, required: false },
-		analiticoUrl: { type: Number, required: false },
+		provinciaInstitucion: { type: String, required: false },
 	},
 });
 

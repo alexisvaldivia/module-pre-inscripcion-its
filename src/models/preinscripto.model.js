@@ -9,9 +9,7 @@ const preinscriptoSchema = new mongoose.Schema({
 		default: 'pendiente',
 	},
 
-	carrera: {
-		enum: ['devops', 'fullstack'],
-	},
+	carrera: String,
 
 	datosPersonales: {
 		nombreCompleto: String,
@@ -19,9 +17,11 @@ const preinscriptoSchema = new mongoose.Schema({
 		dni: String,
 		cuit: String,
 		email: String,
+		numeroTelefono: String,
 		provincia: String,
 		ciudad: String,
 		direccion: String,
+		fechaNacimiento: Date,
 	},
 
 	estudios: {

@@ -1,16 +1,19 @@
 import Joi from 'joi';
 
-export const datosPersonalesSchema = new Joi.object({
-	nombreCompleto: Joi.string().required(),
-	apellidoCompleto: Joi.string().required(),
-	dni: Joi.string().required().length(8),
-	cuit: Joi.string().required().length(11),
-	email: Joi.string().required(),
-	numeroTelefono: Joi.string().required(),
-	provincia: Joi.string().required(),
-	ciudad: Joi.string().required(),
-	direccion: Joi.string().required(),
-	fechaNacimiento: Joi.date().format('YYYY-MM-DD').required(),
+export const preinscripcionSchema = new Joi.object({
+	carrera: Joi.string().required(),
+	datosPersonales: Joi.object({
+		nombreCompleto: Joi.string().required(),
+		apellidoCompleto: Joi.string().required(),
+		dni: Joi.string().required().length(8),
+		cuit: Joi.string().required().length(11),
+		email: Joi.string().email().required(),
+		numeroTelefono: Joi.string().required(),
+		provincia: Joi.string().required(),
+		ciudad: Joi.string().required(),
+		direccion: Joi.string().required(),
+		fechaNacimiento: Joi.date().required(),
+	}),
 });
 
 export const estudiosSchema = new Joi.object({

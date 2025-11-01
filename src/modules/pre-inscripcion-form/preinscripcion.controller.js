@@ -1,38 +1,51 @@
 import Preinscripto from '../../models/preinscripto.model.js';
-import { datosPersonalesSchema } from './preinscripcion.dto.js';
+import { preinscripcionSchema } from './preinscripcion.dto.js';
 
 const crearPreinscripto = async (req, res) => {
 	// Crear una 'cuenta' y una vez que se genera el post en la bd, se manda a una pantalla de login
 	try {
-		const { error, value } = datosPersonalesSchema.validate(req.body);
+		const { error, value } = preinscripcionSchema.validate(req.body);
 
-		if (error)
-			res.status(500).json({
+		if (error) {
+			console.error(
+				'Falta datos personales o la informacion enviada no es valida',
+				error
+			);
+			return res.status(400).json({
 				msg: 'Falta datos personales o la informacion enviada no es valida',
 				datosRecibidos: req.body,
 			});
+		}
 
-		const preinscripcionExistente = Preinscripto.findOne({
+		const preinscripcionExistente = await Preinscripto.findOne({
 			$or: [
 				{ 'datosPersonales.dni': value.dni },
 				{ 'datosPersonales.email': value.email },
 			],
 		});
 
-		if (preinscripcionExistente)
-			res
-				.status(409)
-				.json({ msg: 'Ya existe una preinscripcion con ese email o DNI.' });
+		if (preinscripcionExistente) {
+			console.error(
+				'Ya existe una preinscripcion con ese email o DNI.',
+				preinscripcionExistente
+			);
+
+			return res.status(409).json({
+				msg: 'Ya existe una preinscripcion con ese email o DNI.',
+			});
+		}
 
 		const preinscripto = new Preinscripto({
-			datosPersonales: value,
+			carrera: value.carrera,
+			datosPersonales: value.datosPersonales,
 		});
+
 		const result = await preinscripto.save();
 
 		if (result)
 			res.status(201).json({
 				msg: 'Se generó una preinscripción.',
-				data: preinscripto.datosPersonales,
+				data: preinscripto,
 			});
 	} catch (err) {
 		console.error('Error al generar preincripcion', err);
@@ -73,11 +86,19 @@ const agregarEstudios = async (req, res) => {
 	}
 };
 
-const obtenerTodosLosPreinscriptos = async (req, res) => {};
+const obtenerTodosLosPreinscriptos = async (req, res) => {
+	const result = await Preinscripto.find({});
+
+	if (!result)
+		res.status(404).json({ msg: 'No se encontraron preinscripciones.' });
+
+	res.status(201).json({ data: result });
+};
 
 const preincripcionController = {
 	crearPreinscripto,
 	agregarEstudios,
+	obtenerTodosLosPreinscriptos,
 };
 
 export default preincripcionController;

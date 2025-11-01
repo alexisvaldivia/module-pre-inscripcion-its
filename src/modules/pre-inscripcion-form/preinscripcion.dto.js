@@ -18,14 +18,29 @@ export const preinscripcionSchema = new Joi.object({
 
 export const estudiosSchema = new Joi.object({
 	secundarioCompleto: Joi.boolean().required(),
-	institucion: Joi.string().required().allow(null),
-	anioEgreso: Joi.number().required().allow(null).min(1000).max(9999),
-	ciudadInstitucion: Joi.string().required().allow(null),
-	provinciaInstitucion: Joi.string().required(),
-});
-
-export const documentacion = new Joi.object({
-	analiticoUrl: Joi.string().required(),
-	frenteDni: Joi.string().required(),
-	dorsoDni: Joi.string().required(),
+	institucion: Joi.when('secundarioCompleto', {
+		is: true,
+		then: Joi.string().required(),
+		otherwise: Joi.allow(null),
+	}),
+	anioEgreso: Joi.when('secundarioCompleto', {
+		is: true,
+		then: Joi.number().required().min(1900).max(new Date().getFullYear()),
+		otherwise: Joi.number().allow(null),
+	}),
+	ciudadInstitucion: Joi.when('secundarioCompleto', {
+		is: true,
+		then: Joi.string().required(),
+		otherwise: Joi.string().allow(null),
+	}),
+	provinciaInstitucion: Joi.when('secundarioCompleto', {
+		is: true,
+		then: Joi.string().required(),
+		otherwise: Joi.string().allow(null),
+	}),
+	analiticoUrl: Joi.when('secundarioCompleto', {
+		is: true,
+		then: Joi.string().required(),
+		otherwise: Joi.string().allow(null),
+	}),
 });

@@ -57,6 +57,8 @@ const crearPreinscripto = async (req, res) => {
 
 const agregarEstudios = async (req, res) => {
 	try {
+		
+		
 		const estudios = req.body;
 		const dni = req.params.dni;
 
@@ -85,6 +87,8 @@ const agregarEstudios = async (req, res) => {
 		res.status(500).json({ msg: 'Error al agregar los estudios', error: err });
 	}
 };
+
+
 
 const obtenerTodosLosPreinscriptos = async (req, res) => {
 	const result = await Preinscripto.find({});

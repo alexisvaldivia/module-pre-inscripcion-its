@@ -19,8 +19,8 @@ const crearPreinscripto = async (req, res) => {
 
 		const preinscripcionExistente = await Preinscripto.findOne({
 			$or: [
-				{ 'datosPersonales.dni': value.dni },
-				{ 'datosPersonales.email': value.email },
+				{ 'datosPersonales.dni': value.datosPersonales.dni },
+				{ 'datosPersonales.email': value.datosPersonales.email },
 			],
 		});
 

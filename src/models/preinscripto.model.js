@@ -9,8 +9,13 @@ const preinscriptoSchema = new mongoose.Schema({
 		default: 'pendiente',
 	},
 
+	carrera: {
+		enum: ['devops', 'fullstack'],
+	},
+
 	datosPersonales: {
 		nombreCompleto: String,
+		apellidoCompleto: String,
 		dni: String,
 		cuit: String,
 		email: String,
@@ -21,11 +26,11 @@ const preinscriptoSchema = new mongoose.Schema({
 
 	estudios: {
 		secundarioCompleto: Boolean,
-		institucion: String,
-		anioEgreso: Number,
-		ciudadInstitucion: String,
-		provinciaInstitucion: String,
-		analiticoUrl: String,
+		institucion: { type: String, required: false },
+		anioEgreso: { type: Number, required: false },
+		ciudadInstitucion: { type: Number, required: false },
+		provinciaInstitucion: { type: Number, required: false },
+		analiticoUrl: { type: Number, required: false },
 	},
 });
 

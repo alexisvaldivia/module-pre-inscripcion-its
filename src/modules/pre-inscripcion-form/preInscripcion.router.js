@@ -8,6 +8,13 @@ preInscripcionRouter.post(
 	preincripcionController.crearPreinscripto
 );
 
-preInscripcionRouter.patch('/preinscripto/:dni/estudios', preincripcionController.agregarEstudios)
+preInscripcionRouter.patch(
+	'/preinscripto/:dni/estudios',
+	preincripcionController.agregarEstudios
+);
+preInscripcionRouter.get(
+	'/preinscripciones',
+	preincripcionController.obtenerTodosLosPreinscriptos
+);
 
 export default preInscripcionRouter;

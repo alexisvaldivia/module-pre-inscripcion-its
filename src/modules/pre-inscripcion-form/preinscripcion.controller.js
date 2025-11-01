@@ -1,37 +1,41 @@
 import Preinscripto from '../../models/preinscripto.model.js';
+import { datosPersonalesSchema } from './preinscripcion.dto.js';
 
 const crearPreinscripto = async (req, res) => {
 	// Crear una 'cuenta' y una vez que se genera el post en la bd, se manda a una pantalla de login
-
 	try {
-		const datosPersonales = req.body;
-		const dni = req.body.dni;
-		const email = req.body.email;
+		const { error, value } = datosPersonalesSchema.validate(req.body);
 
-		if (!datosPersonales)
-			res.status(500).json({ msg: 'Faltan datos personales.' });
-
-		const registroCreadoDni = await Preinscripto.findOne({
-			'datosPersonales.dni': dni,
-		});
-		const registroCreadoMail = await Preinscripto.findOne({
-			'datosPersonales.email': email,
-		});
-
-		if (registroCreadoDni || registroCreadoMail)
-			res.status(401).json({
-				msg: `Ya hay un registro de preinscripción con el número de DNI o email.`,
+		if (error)
+			res.status(500).json({
+				msg: 'Falta datos personales o la informacion enviada no es valida',
+				datosRecibidos: req.body,
 			});
 
-		const preinscripto = new Preinscripto({ datosPersonales });
+		const preinscripcionExistente = Preinscripto.findOne({
+			$or: [
+				{ 'datosPersonales.dni': value.dni },
+				{ 'datosPersonales.email': value.email },
+			],
+		});
+
+		if (preinscripcionExistente)
+			res
+				.status(409)
+				.json({ msg: 'Ya existe una preinscripcion con ese email o DNI.' });
+
+		const preinscripto = new Preinscripto({
+			datosPersonales: value,
+		});
 		const result = await preinscripto.save();
 
 		if (result)
-			res
-				.status(201)
-				.json({ msg: 'Se generó una preinscripción.', data: preinscripto });
+			res.status(201).json({
+				msg: 'Se generó una preinscripción.',
+				data: preinscripto.datosPersonales,
+			});
 	} catch (err) {
-		console.error('Error al generar preincripcion');
+		console.error('Error al generar preincripcion', err);
 		res
 			.status(500)
 			.json({ msg: 'Error al generar una nueva preinscripcion', err });
@@ -65,9 +69,11 @@ const agregarEstudios = async (req, res) => {
 		});
 	} catch (err) {
 		console.error('Error al agregar estudios', err);
-		res.status(500).json({ msg: 'Error al agregar los estudios', err });
+		res.status(500).json({ msg: 'Error al agregar los estudios', error: err });
 	}
 };
+
+const obtenerTodosLosPreinscriptos = async (req, res) => {};
 
 const preincripcionController = {
 	crearPreinscripto,

@@ -21,6 +21,11 @@ export const estudiosSchema = new Joi.object({
 	institucion: Joi.string().required().allow(null),
 	anioEgreso: Joi.number().required().allow(null).min(1000).max(9999),
 	ciudadInstitucion: Joi.string().required().allow(null),
-	provinciaInstitucion: Joi.string().required().allow(null),
-	analiticoUrl: Joi.string().required().allow(null),
+	provinciaInstitucion: Joi.string().required(),
+});
+
+export const documentacion = new Joi.object({
+	analiticoUrl: Joi.string().required(),
+	frenteDni: Joi.string().required(),
+	dorsoDni: Joi.string().required(),
 });

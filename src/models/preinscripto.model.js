@@ -32,6 +32,13 @@ const preinscriptoSchema = new mongoose.Schema({
 		provinciaInstitucion: String,
 		analiticoConstanciaUrl: String,
 	},
+
+	archivos: {
+		dniFrente: { type: String },
+		dniDorso: { type: String },
+		tituloSecundario: { type: String },
+		certificadoBuenaSalud: {type: String}
+	},
 });
 
 const Preinscripto = mongoose.model('Preinscripto', preinscriptoSchema);

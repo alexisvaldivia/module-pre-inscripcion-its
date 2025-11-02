@@ -27,7 +27,7 @@ const preinscriptoSchema = new mongoose.Schema({
 	estudios: {
 		secundarioCompleto: Boolean,
 		institucion: String,
-		anioEgreso: String,
+		anioEgreso: Number,
 		ciudadInstitucion: String,
 		provinciaInstitucion: String,
 		analiticoConstanciaUrl: String,

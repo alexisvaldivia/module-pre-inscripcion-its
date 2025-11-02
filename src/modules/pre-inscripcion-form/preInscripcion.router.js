@@ -30,9 +30,9 @@ preInscripcionRouter.get(
 	preinscripcionController.obtenerAceptadosYPendientes
 );
 
-preInscripcionRouter.patch(
-	'/preinscripto/:dni',
-	preinscripcionController.actualizarDatosPreinscripto
-);
+// preInscripcionRouter.patch(
+// 	'/preinscripto/:dni',
+// 	preinscripcionController.actualizarDatosPreinscripto
+// );
 
 export default preInscripcionRouter;

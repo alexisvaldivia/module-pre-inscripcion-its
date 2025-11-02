@@ -1,5 +1,5 @@
 import Preinscripto from '../../models/preinscripto.model.js';
-import { preinscripcionSchema } from './preinscripcion.dto.js';
+import { preinscripcionSchema, estudiosSchema } from './preinscripcion.dto.js';
 
 const crearPreinscripto = async (req, res) => {
 	// Crear una 'cuenta' y una vez que se genera el post en la bd, se manda a una pantalla de login
@@ -171,6 +171,40 @@ const obtenerAceptadosYPendientes = async (req, res) => {
 	}
 };
 
+const actualizarDatosPersonales = async (req, res) => {
+	try {
+		const dni = req.params.dni;
+		const datosActualizados = req.body;
+
+		if (!datosActualizados)
+			res.send(400).json({ msg: 'No hay datos a actualizar.' });
+
+		const camposActualizados = {};
+
+		for (let key in datosActualizados) {
+			camposActualizados[`datosPersonales[${key}]`] = datosActualizados[key];
+		}
+
+		const preinscriptoActualizado = await Preinscripto.findOneAndUpdate(
+			{
+				'datosPersonales.dni': dni,
+			},
+			{
+				$set: camposActualizados,
+			},
+			{
+				new: true,
+			}
+		);
+
+		if (preinscriptoActualizado)
+			res.status(202).json({ preinscriptoActualizado });
+	} catch (err) {
+		console.error(err);
+		res.status(409).json({ msg: 'Error al actualizar los datos', error: err });
+	}
+};
+
 const preinscripcionController = {
 	crearPreinscripto,
 	agregarEstudios,
@@ -178,6 +212,7 @@ const preinscripcionController = {
 	obtenerAceptadosYPendientes,
 	obtenerAceptados,
 	cargaArchivos,
+	actualizarDatosPersonales,
 };
 
 export default preinscripcionController;

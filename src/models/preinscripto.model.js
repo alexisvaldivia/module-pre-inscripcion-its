@@ -26,10 +26,11 @@ const preinscriptoSchema = new mongoose.Schema({
 
 	estudios: {
 		secundarioCompleto: Boolean,
-		institucion: { type: String, required: false },
-		anioEgreso: { type: Number, required: false },
-		ciudadInstitucion: { type: String, required: false },
-		provinciaInstitucion: { type: String, required: false },
+		institucion: String,
+		anioEgreso: String,
+		ciudadInstitucion: String,
+		provinciaInstitucion: String,
+		analiticoConstanciaUrl: String,
 	},
 });
 

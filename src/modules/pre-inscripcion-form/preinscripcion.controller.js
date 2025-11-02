@@ -1,5 +1,5 @@
 import Preinscripto from '../../models/preinscripto.model.js';
-import { preinscripcionSchema } from './preinscripcion.dto.js';
+import { preinscripcionSchema, estudiosSchema } from './preinscripcion.dto.js';
 
 const crearPreinscripto = async (req, res) => {
 	// Crear una 'cuenta' y una vez que se genera el post en la bd, se manda a una pantalla de login
@@ -57,21 +57,24 @@ const crearPreinscripto = async (req, res) => {
 
 const agregarEstudios = async (req, res) => {
 	try {
-		
-		
-		const estudios = req.body;
 		const dni = req.params.dni;
 
-		if (!estudios || !dni)
-			res.status(500).json({
-				msg: 'Faltan datos de sus estudios o el dni del preinscripto.',
-			});
+		const { error, value } = estudiosSchema.validate(req.body);
+		console.log(value);
+
+		if (error) {
+			return res
+				.status(409)
+				.json({ msg: 'La informacion enviada no es valida', error });
+		}
 
 		const preinscriptoActualizado = await Preinscripto.findOneAndUpdate(
 			{
 				'datosPersonales.dni': dni,
 			},
-			{ $push: { estudios: estudios } },
+			{
+				"estudios": value,
+			},
 			{ new: true }
 		);
 
@@ -87,8 +90,6 @@ const agregarEstudios = async (req, res) => {
 		res.status(500).json({ msg: 'Error al agregar los estudios', error: err });
 	}
 };
-
-
 
 const obtenerTodosLosPreinscriptos = async (req, res) => {
 	const result = await Preinscripto.find({});

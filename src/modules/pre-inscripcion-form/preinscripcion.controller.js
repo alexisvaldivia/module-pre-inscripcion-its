@@ -1,6 +1,6 @@
 import Preinscripto from '../../models/preinscripto.model.js';
 import { preinscripcionSchema } from './preinscripcion.dto.js';
-import path from 'path';
+
 const crearPreinscripto = async (req, res) => {
 	// Crear una 'cuenta' y una vez que se genera el post en la bd, se manda a una pantalla de login
 	try {
@@ -93,45 +93,44 @@ const agregarEstudios = async (req, res) => {
 
 //Se encarga de subir las imagenes a la base de datos
 const cargaArchivos = async (req, res) => {
-	try{
-		const dni = req.params.dni
-		if(!dni) {
-			return res.status(400).json({msg: "DNI requerido"})
-
+	try {
+		const dni = req.params.dni;
+		if (!dni) {
+			return res.status(400).json({ msg: 'DNI requerido' });
 		}
 
 		const archivo = req.files;
 
-		if(!archivo){
-			return res.status(400).json({ msg: "No se recibieron archivos." });
+		if (!archivo) {
+			return res.status(400).json({ msg: 'No se recibieron archivos.' });
 		}
 
 		const rutasArchivos = {
 			dniFrente: archivo.dniFrente?.[0]?.path || null,
 			dniDorso: archivo.dniDorso?.[0]?.path || null,
-			tituloSecundario: archivo.tituloSecundario?.[0]?.path ||null,
-			certificadoBuenaSalud: archivo.certificadoBuenaSalud?.[0]?.path || null
-		}
+			tituloSecundario: archivo.tituloSecundario?.[0]?.path || null,
+			certificadoBuenaSalud: archivo.certificadoBuenaSalud?.[0]?.path || null,
+		};
 
 		const preinscripto = await Preinscripto.findOneAndUpdate(
-			{"datosPersonales.dni": dni },
-			{$set: {archivos: rutasArchivos}},
-			{new: true}
+			{ 'datosPersonales.dni': dni },
+			{ $set: { archivos: rutasArchivos } },
+			{ new: true }
 		);
 
-		if(!preinscripto){
-			 return res.status(404).json({ msg: "Preinscripto no encontrado." });
+		if (!preinscripto) {
+			return res.status(404).json({ msg: 'Preinscripto no encontrado.' });
 		}
 
 		res.status(200).json({
-			msg: "Archivos subidos correctamente",
-			data: preinscripto
+			msg: 'Archivos subidos correctamente',
+			data: preinscripto,
 		});
-	}catch(err){
-		console.error("Error al subir archivos:", err);
-    	res.status(500).json({ msg: "Error interno del servidor.", error: err });
+	} catch (err) {
+		console.error('Error al subir archivos:', err);
+		res.status(500).json({ msg: 'Error interno del servidor.', error: err });
 	}
-}
+};
 
 const obtenerTodosLosPreinscriptos = async (req, res) => {
 	const result = await Preinscripto.find({});
@@ -176,7 +175,7 @@ const preincripcionController = {
 	crearPreinscripto,
 	agregarEstudios,
 	obtenerTodosLosPreinscriptos,
-	cargaArchivos
+	cargaArchivos,
 };
 
 export default preincripcionController;

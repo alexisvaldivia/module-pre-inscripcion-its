@@ -176,6 +176,7 @@ const preinscripcionController = {
 	agregarEstudios,
 	obtenerTodosLosPreinscriptos,
 	obtenerAceptadosYPendientes,
+	obtenerAceptados,
 	cargaArchivos,
 };
 

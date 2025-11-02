@@ -24,4 +24,15 @@ preInscripcionRouter.get(
 	preincripcionController.obtenerAceptados
 );
 
+preInscripcionRouter.get(
+	'/aceptados-pendientes',
+	apiKeyMiddleware,
+	preincripcionController.obtenerAceptadosYPendientes
+);
+
+preInscripcionRouter.patch(
+	'/preinscripto/:dni',
+	preincripcionController.actualizarDatosPreinscripto
+);
+
 export default preInscripcionRouter;

@@ -103,7 +103,7 @@ const obtenerTodosLosPreinscriptos = async (req, res) => {
 const obtenerAceptados = async (req, res) => {
 	const result = await Preinscripto.find({ estado: 'aceptado' });
 
-	if (!result)
+	if (!result || result.length === 0)
 		res
 			.status(404)
 			.json({ msg: 'No se encontraron preinscripciones aceptadas.' });
@@ -111,11 +111,32 @@ const obtenerAceptados = async (req, res) => {
 	res.status(201).json({ data: result });
 };
 
+const obtenerAceptadosYPendientes = async (req, res) => {
+	try {
+		const result = await Preinscripto.find({
+			estado: { $ne: 'rechazado' },
+		});
+
+		if (!result || result.length === 0) {
+			return res.status(404).json({
+				msg: 'No se encontraron preinscripciones aceptadas o pendientes.',
+			});
+		}
+
+		res.status(200).json({ data: result });
+	} catch (err) {
+		console.error('Error al obtener las preinscripciones', err);
+		res.status(500).json({ msg: 'Error del servidor', error: err });
+	}
+};
+
 const preincripcionController = {
 	crearPreinscripto,
 	agregarEstudios,
 	obtenerTodosLosPreinscriptos,
 	obtenerAceptados,
+	obtenerAceptadosYPendientes,
+	actualizarDatosPreinscripto
 };
 
 export default preincripcionController;

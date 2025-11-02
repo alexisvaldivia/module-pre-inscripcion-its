@@ -1,5 +1,6 @@
 import express from 'express';
 import preincripcionController from './preinscripcion.controller.js';
+import apiKeyMiddleware from './../../middlewares/apiKey.middleware.js';
 
 const preInscripcionRouter = express.Router();
 
@@ -19,6 +20,7 @@ preInscripcionRouter.get(
 
 preInscripcionRouter.get(
 	'/aceptados',
+	apiKeyMiddleware,
 	preincripcionController.obtenerAceptados
 );
 

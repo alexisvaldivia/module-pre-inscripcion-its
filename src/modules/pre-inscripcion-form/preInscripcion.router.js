@@ -1,38 +1,38 @@
 import express from 'express';
-import preincripcionController from './preinscripcion.controller.js';
+import preinscripcionController from './preinscripcion.controller.js';
 import apiKeyMiddleware from './../../middlewares/apiKey.middleware.js';
 
 const preInscripcionRouter = express.Router();
 
 preInscripcionRouter.post(
 	'/registrarPreInscripto',
-	preincripcionController.crearPreinscripto
+	preinscripcionController.crearPreinscripto
 );
 
 preInscripcionRouter.patch(
 	'/preinscripto/:dni/estudios',
-	preincripcionController.agregarEstudios
+	preinscripcionController.agregarEstudios
 );
 preInscripcionRouter.get(
 	'/preinscripciones',
-	preincripcionController.obtenerTodosLosPreinscriptos
+	preinscripcionController.obtenerTodosLosPreinscriptos
 );
 
 preInscripcionRouter.get(
 	'/aceptados',
 	apiKeyMiddleware,
-	preincripcionController.obtenerAceptados
+	preinscripcionController.obtenerAceptados
 );
 
 preInscripcionRouter.get(
 	'/aceptados-pendientes',
 	apiKeyMiddleware,
-	preincripcionController.obtenerAceptadosYPendientes
+	preinscripcionController.obtenerAceptadosYPendientes
 );
 
 preInscripcionRouter.patch(
 	'/preinscripto/:dni',
-	preincripcionController.actualizarDatosPreinscripto
+	preinscripcionController.actualizarDatosPreinscripto
 );
 
 export default preInscripcionRouter;

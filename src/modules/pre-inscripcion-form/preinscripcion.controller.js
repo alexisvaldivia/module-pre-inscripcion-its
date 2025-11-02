@@ -171,11 +171,11 @@ const obtenerAceptadosYPendientes = async (req, res) => {
 	}
 };
 
-const preincripcionController = {
+const preinscripcionController = {
 	crearPreinscripto,
 	agregarEstudios,
 	obtenerTodosLosPreinscriptos,
 	cargaArchivos,
 };
 
-export default preincripcionController;
+export default preinscripcionController;

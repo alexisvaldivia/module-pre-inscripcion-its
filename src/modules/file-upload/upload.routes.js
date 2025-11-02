@@ -1,6 +1,6 @@
 import express from "express";
 import preInscripcionRouter from "../pre-inscripcion-form/preInscripcion.router";
-import preincripcionController from "../pre-inscripcion-form/preinscripcion.controller";
+import preinscripcionController from "../pre-inscripcion-form/preinscripcion.controller";
 
 const preInscripcionRouter = express.Router();
 
@@ -13,7 +13,7 @@ preInscripcionRouter.post(
     { name: "tituloSecundario", maxCount: 1 },
     { name: "certificadoBuenaSalud", maxCount: 1}
   ]),
-  preincripcionController.cargaArchivos
+  preinscripcionController.cargaArchivos
 );
 
 export default preInscripcionRouter;

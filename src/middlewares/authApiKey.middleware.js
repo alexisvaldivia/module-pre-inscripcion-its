@@ -1,4 +1,4 @@
-const apiKeyMiddleware = (req, res, next) => {
+const authApiKeyMiddleware = (req, res, next) => {
 	const apiKey = req.header('p-api-key');
 
 	if (!apiKey) res.status(401).json({ msg: 'Auth Error' });
@@ -9,4 +9,4 @@ const apiKeyMiddleware = (req, res, next) => {
 	next();
 };
 
-export default apiKeyMiddleware
+export default authApiKeyMiddleware

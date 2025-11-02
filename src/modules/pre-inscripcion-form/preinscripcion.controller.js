@@ -132,15 +132,6 @@ const cargaArchivos = async (req, res) => {
 	}
 };
 
-const obtenerTodosLosPreinscriptos = async (req, res) => {
-	const result = await Preinscripto.find({});
-
-	if (!result)
-		res.status(404).json({ msg: 'No se encontraron preinscripciones.' });
-
-	res.status(201).json({ data: result });
-};
-
 const obtenerAceptados = async (req, res) => {
 	const result = await Preinscripto.find({ estado: 'aceptado' });
 
@@ -205,6 +196,63 @@ const actualizarDatosPersonales = async (req, res) => {
 	}
 };
 
+// Metodos para la secre
+
+const cambiarEstadoPreinscripcion = async (req, res) => {
+	try {
+		const dni = req.params.dni;
+
+		const nuevoEstado = req.body.estado;
+
+		if (!nuevoEstado || !dni)
+			res.status(400).json({
+				msg: 'Se requiere el DNI del preinscripto y el nuevo estado para poder actualizar.',
+			});
+
+		const preinscripto = await Preinscripto.findOneAndUpdate(
+			{
+				'datosPersonales.dni': dni,
+			},
+			{
+				estado: nuevoEstado,
+			},
+			{ new: true }
+		);
+
+		if (!preinscripto)
+			res.status(404).json({
+				msg: `No se encontró una inscripción registrada con el DNI: ${dni}`,
+			});
+
+		res.status(201).json({
+			msg: `El preinscripto registrado con el DNI: ${dni} cambio su estado a '${nuevoEstado}'`,
+			preinscripto,
+		});
+	} catch (err) {
+		console.error(err);
+		res.status(400).json({
+			msg: 'Ocurrió un error al cambiar el estado del preinscripto',
+			err,
+		});
+	}
+};
+
+const obtenerTodosLosPreinscriptos = async (req, res) => {
+	try {
+		const preinscriptos = await Preinscripto.find({});
+
+		if (!preinscriptos)
+			res.status(404).json({ msg: 'No se encontraron preinscripciones.' });
+
+		res.status(200).json({ data: preinscriptos });
+	} catch (err) {
+		console.log(err);
+		res
+			.status(400)
+			.json({ msg: 'Ocurrió un error al obtener todas las preinscripciones.' });
+	}
+};
+
 const preinscripcionController = {
 	crearPreinscripto,
 	agregarEstudios,
@@ -213,6 +261,7 @@ const preinscripcionController = {
 	obtenerAceptados,
 	cargaArchivos,
 	actualizarDatosPersonales,
+	cambiarEstadoPreinscripcion,
 };
 
 export default preinscripcionController;

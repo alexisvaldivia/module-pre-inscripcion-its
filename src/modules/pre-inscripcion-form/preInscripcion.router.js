@@ -1,6 +1,7 @@
 import express from 'express';
 import preinscripcionController from './preinscripcion.controller.js';
-import apiKeyMiddleware from './../../middlewares/apiKey.middleware.js';
+import authApiKeyMiddleware from '../../middlewares/authApiKey.middleware.js';
+import adminApiKey from '../../middlewares/adminApiKey.middleware.js';
 
 const preInscripcionRouter = express.Router();
 
@@ -13,26 +14,33 @@ preInscripcionRouter.patch(
 	'/preinscripto/:dni/estudios',
 	preinscripcionController.agregarEstudios
 );
-preInscripcionRouter.get(
-	'/preinscripciones',
-	preinscripcionController.obtenerTodosLosPreinscriptos
-);
+
+// Equipo de auth
 
 preInscripcionRouter.get(
 	'/aceptados',
-	apiKeyMiddleware,
+	authApiKeyMiddleware,
 	preinscripcionController.obtenerAceptados
 );
 
 preInscripcionRouter.get(
 	'/aceptados-pendientes',
-	apiKeyMiddleware,
+	authApiKeyMiddleware,
 	preinscripcionController.obtenerAceptadosYPendientes
 );
 
+// admin
+
 preInscripcionRouter.patch(
-	'/preinscripto/:dni/datosPersonales',
-	preinscripcionController.actualizarDatosPersonales
+	'/preinscripto/admin/:dni/',
+	adminApiKey,
+	preinscripcionController.cambiarEstadoPreinscripcion
+);
+
+preInscripcionRouter.get(
+	'/admin/preinscripciones',
+	adminApiKey,
+	preinscripcionController.obtenerTodosLosPreinscriptos
 );
 
 export default preInscripcionRouter;

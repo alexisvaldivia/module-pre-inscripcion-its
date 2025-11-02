@@ -17,4 +17,9 @@ preInscripcionRouter.get(
 	preincripcionController.obtenerTodosLosPreinscriptos
 );
 
+preInscripcionRouter.get(
+	'/aceptados',
+	preincripcionController.obtenerAceptados
+);
+
 export default preInscripcionRouter;

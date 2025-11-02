@@ -73,7 +73,7 @@ const agregarEstudios = async (req, res) => {
 				'datosPersonales.dni': dni,
 			},
 			{
-				"estudios": value,
+				estudios: value,
 			},
 			{ new: true }
 		);
@@ -100,10 +100,22 @@ const obtenerTodosLosPreinscriptos = async (req, res) => {
 	res.status(201).json({ data: result });
 };
 
+const obtenerAceptados = async (req, res) => {
+	const result = await Preinscripto.find({ estado: 'aceptado' });
+
+	if (!result)
+		res
+			.status(404)
+			.json({ msg: 'No se encontraron preinscripciones aceptadas.' });
+
+	res.status(201).json({ data: result });
+};
+
 const preincripcionController = {
 	crearPreinscripto,
 	agregarEstudios,
 	obtenerTodosLosPreinscriptos,
+	obtenerAceptados,
 };
 
 export default preincripcionController;

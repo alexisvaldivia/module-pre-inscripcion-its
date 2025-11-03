@@ -14,6 +14,7 @@ const crearPreinscripto = async (req, res) => {
 			return res.status(400).json({
 				msg: 'Falta datos personales o la informacion enviada no es valida',
 				datosRecibidos: req.body,
+				error
 			});
 		}
 
@@ -126,9 +127,12 @@ const cargaArchivos = async (req, res) => {
 			msg: 'Archivos subidos correctamente',
 			data: preinscripto,
 		});
-	} catch (err) {
-		console.error('Error al subir archivos:', err);
-		res.status(500).json({ msg: 'Error interno del servidor.', error: err });
+		console.log("📥 Petición recibida para cargar archivos...");
+		console.log("Archivos recibidos:", req.files);
+		console.log("DNI:", req.params.dni);
+	}catch(err){
+		console.error("Error al subir archivos:", err);
+    	res.status(500).json({ msg: "Error interno del servidor.", error: err });
 	}
 };
 

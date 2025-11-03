@@ -127,7 +127,7 @@ const cargaArchivos = async (req, res) => {
 			msg: 'Archivos subidos correctamente',
 			data: preinscripto,
 		});
-		console.log("📥 Petición recibida para cargar archivos...");
+		console.log("Petición recibida para cargar archivos.");
 		console.log("Archivos recibidos:", req.files);
 		console.log("DNI:", req.params.dni);
 	}catch(err){

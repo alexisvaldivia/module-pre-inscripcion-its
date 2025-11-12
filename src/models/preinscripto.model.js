@@ -30,7 +30,6 @@ const preinscriptoSchema = new mongoose.Schema({
 		anioEgreso: Number,
 		ciudadInstitucion: String,
 		provinciaInstitucion: String,
-		analiticoConstanciaUrl: String,
 	},
 
 	archivos: {

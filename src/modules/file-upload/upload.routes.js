@@ -5,7 +5,7 @@ import upload from '../../middlewares/multer.js';
 const uploadRouter = express.Router();
 
 uploadRouter.post(
-	'/preinscripto/:dni/upload',
+	'/preinscripto/:dni/documentacion',
 	upload.fields([
 		{ name: 'dniFrente', maxCount: 1 },
 		{ name: 'dniDorso', maxCount: 1 },

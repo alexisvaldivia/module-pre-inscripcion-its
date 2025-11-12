@@ -22,5 +22,4 @@ export const estudiosSchema = new Joi.object({
 	anioEgreso: Joi.number().required().min(1900).max(new Date().getFullYear()),
 	ciudadInstitucion: Joi.string().required(),
 	provinciaInstitucion: Joi.string().required(),
-	analiticoConstanciaUrl: Joi.string().required(),
 });

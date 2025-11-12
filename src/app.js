@@ -6,6 +6,7 @@ import cors from 'cors';
 
 dotenv.config();
 
+const app = express();
 app.use(
 	cors({
 		origin: '*',
@@ -14,7 +15,6 @@ app.use(
 	})
 );
 
-const app = express();
 
 app.use(uploadRouter);
 app.use(express.json());

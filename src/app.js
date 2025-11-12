@@ -7,10 +7,6 @@ import cors from 'cors';
 dotenv.config();
 
 const app = express();
-
-app.use(uploadRouter);
-app.use(express.json());
-app.use(preinscripcionRouter);
 app.use(
 	cors({
 		origin: '*',
@@ -18,6 +14,9 @@ app.use(
 		allowedHeaders: ['Content-Type', 'Authorization'],
 	})
 );
+app.use(uploadRouter);
+app.use(express.json());
+app.use(preinscripcionRouter);
 
 app.set('port', process.env.PORT);
 

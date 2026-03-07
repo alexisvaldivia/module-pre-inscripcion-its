@@ -1,5 +1,7 @@
 # Módulo de Pre Inscripción
 
+Tecnologías usadas: JavaScript, Nodejs, Expressjs, Mongoose, joi, dotenv, multer, 
+
 La mayoría de los endpoints son públicos.
 
 Los únicos endpoints protegidos:

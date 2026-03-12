@@ -1,21 +1,25 @@
-# Módulo de Pre Inscripción
+# Módulo de Pre-Inscripción
 
-Tecnologías usadas: JavaScript, Nodejs, Expressjs, Mongoose, joi, dotenv, multer, 
+## API REST diseñada para gestionar el flujo de registro inicial de aspirantes, permitiendo la carga de datos personales, información académica y la administración de estados de inscripción.
+Tecnologías
 
-La mayoría de los endpoints son públicos.
+* Lenguaje: JavaScript (Node.js)
+* Framework: Express.js
+* ODM: Mongoose (MongoDB)
+* Validación: Joi
+* Gestión de archivos: Multer
+* Variables de entorno: Dotenv
 
-Los únicos endpoints protegidos:
+Seguridad y Middleware
+El sistema opera mayoritariamente con endpoints públicos para facilitar el acceso a los aspirantes, exceptuando las consultas de gestión y administración que requieren validación:
 
-authApiKeyMiddleware: Validación para consultas del equipo de autenticación.
+* authApiKeyMiddleware: Validación de API Key para consultas del equipo de autenticación.
+* adminApiKey: Validación de clave para acceso al panel administrativo.
 
-adminApiKey: Validación de clave para panel administrativo de la secre.
-
-## 1. Registrar preinscripto
-
+Endpoints1. Registro de aspirante
 POST /registrarPreInscripto
-
-Crea un nuevo registro de preinscripción.
-Body (JSON):
+Crea un nuevo registro de preinscripción con los datos básicos del usuario.
+Cuerpo de la petición (JSON):
 
 {
     "carrera": "devops",
@@ -24,7 +28,7 @@ Body (JSON):
         "apellidoCompleto": "Argento Maradona",
         "dni": "12312312",
         "cuit": "20123123123",
-        "email": "asdasd12@gmail.com",
+        "email": "ejemplo@gmail.com",
         "numeroTelefono": "123123123",
         "provincia": "Rio Negro",
         "ciudad": "Cipolletti",
@@ -33,17 +37,13 @@ Body (JSON):
     }
 }
 
-## 2. Agregar información de estudios secundarios
-
+2. Actualización de información académica
 PATCH /preinscripto/:dni/estudios
+Permite adjuntar o actualizar la información de estudios secundarios y la URL del certificado analítico.
 
-Agrega datos del módulo "Estudios" para un preinscripto. (Me di cuenta que me falto el metodo para actualizar=
+* Parámetros: dni (Documento Nacional de Identidad).
 
-Ruta params:
-
-dni — DNI del preinscripto
-
-Body (JSON):
+Cuerpo de la petición (JSON):
 
 {
     "secundarioCompleto": true,
@@ -51,46 +51,40 @@ Body (JSON):
     "anioEgreso": 2020,
     "ciudadInstitucion": "Cipolletti",
     "provinciaInstitucion": "Rio Negro",
-    "analiticoConstanciaUrl": "pathAlAnalitico"
+    "analiticoConstanciaUrl": "path/al/archivo"
 }
 
-## 3. Obtener solo aceptados
-
-Este es el endpoin que me pidió el equipo de Auth.
-
+3. Consulta de aspirantes aceptados
 GET /aceptados
+Retorna el listado de aspirantes cuyo estado es "aceptado".
 
-Devuelve la lista de preinscriptos aceptados.
-Requiere API Key de autenticación
+* Seguridad: Requiere API Key de autenticación.
 
-## 4. Obtener aceptados y pendientes
-
-Este lo hice por las dudas.
-
+4. Consulta de estados pendientes y aceptados
 GET /aceptados-pendientes
+Retorna el listado de aspirantes que aún no han sido procesados o que ya fueron admitidos.
 
-Devuelve todos los preinscriptos con estado pendiente o aceptado.
-Requiere API Key de autenticación
+* Seguridad: Requiere API Key de autenticación.
 
-## 5. Cambiar estado de preinscripción (secre)
-
+5. Gestión administrativa de estados
 PATCH /preinscripto/admin/:dni
+Actualiza el estado de la preinscripción para determinar la admisión del aspirante.
 
-Actualiza el estado de un preinscripto a aceptado o rechazado.
+* Parámetros: dni.
+* Seguridad: Requiere API Key de administración.
 
-Ruta params:
-
-dni — DNI del preinscripto
-
-Body (JSON):
+Cuerpo de la petición (JSON):
 
 {
   "estado": "aceptado"
 }
 
-- Requiere API Key de administración
+Estados de Preinscripción
 
-Estados posibles del preinscripto
-- pendiente	Información cargada, sin revisar
-- aceptado	Cumple con los requisitos
-- rechazado	No cumple requisitos o fue rechazado manualmente
+* pendiente: Información cargada, pendiente de revisión administrativa.
+* aceptado: El aspirante cumple con los requisitos mínimos.
+* rechazado: No cumple con los requisitos o fue desestimado manualmente.
+
+------------------------------
+¿Necesitas que incluya una sección con los ejemplos de respuesta (200 OK, 400 Bad Request) para cada endpoint?
+

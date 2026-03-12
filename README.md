@@ -84,7 +84,3 @@ Estados de Preinscripción
 * pendiente: Información cargada, pendiente de revisión administrativa.
 * aceptado: El aspirante cumple con los requisitos mínimos.
 * rechazado: No cumple con los requisitos o fue desestimado manualmente.
-
-------------------------------
-¿Necesitas que incluya una sección con los ejemplos de respuesta (200 OK, 400 Bad Request) para cada endpoint?
-
